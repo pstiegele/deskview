@@ -1,0 +1,50 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    tools:context="de.paulsapp.deskview.FullscreenActivity">
+
+    <!-- The primary full-screen view. This can be replaced with whatever view
+         is needed to present your content, e.g. VideoView, SurfaceView,
+         TextureView, etc. -->
+
+
+
+    <TextView
+        android:text="00:00"
+        android:textColor="#ffffff"
+        android:textSize="125sp"
+        android:fontFamily="sans-serif-thin"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/clock" />
+
+
+    <!-- This FrameLayout insets its children based on system windows using
+         android:fitsSystemWindows. -->
+    <FrameLayout
+        android:id="@+id/videoViewLayout"
+        android:layout_height="381dp"
+        android:layout_width="672dp">
+
+
+
+    <VideoView
+        android:id="@+id/videoView"
+        android:layout_height="fill_parent"
+        android:layout_width="fill_parent" />
+</FrameLayout>
+
+    <TextView
+        android:layout_below="@+id/videoViewLayout"
+        android:layout_alignEnd="@+id/videoViewLayout"
+        android:layout_margin="20dp"
+        android:textColor="#ffffff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/videoInfo" />
+
+</RelativeLayout>
