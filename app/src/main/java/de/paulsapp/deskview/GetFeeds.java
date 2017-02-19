@@ -1,5 +1,7 @@
 package de.paulsapp.deskview;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Environment;
 import android.util.Log;
 
@@ -19,6 +21,7 @@ import okhttp3.Response;
 public class GetFeeds {
 
     OkHttpClient client = new OkHttpClient();
+    public static Context context = null;
 
     String run(String url) throws IOException{
         Request request = new Request.Builder().url(url).build();
@@ -46,10 +49,17 @@ public class GetFeeds {
         int bufferSize = 1024;
         byte[] buffer = new byte[bufferSize];
         int len;
+        int counter=0;
         while((len = inputStream.read(buffer))!=-1){
             fos.write(buffer,0,len);
+            counter++;
          //   Log.d("feed","und geschrieben...");
         }
+        SharedPreferences sharedPreferences = context.getSharedPreferences("de.paulsapp.deskview.feeds", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("downloadCounter",sharedPreferences.getInt("downloadCounter",0)+counter*1024);
+        Log.d("deskviewstats","downloadCounter wurde um "+counter*1024+" erhöht.");
+        editor.apply();
         fos.close();
         Log.d("feed","alles fertig");
     }
