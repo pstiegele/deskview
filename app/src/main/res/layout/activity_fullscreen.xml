@@ -12,56 +12,59 @@
 
 
 
-    <TextView
-        android:text="00:00"
-        android:textColor="#ffffff"
-        android:textSize="125sp"
-        android:fontFamily="sans-serif-thin"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="20dp"
+
+    <android.widget.TextClock
+        android:id="@+id/clock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/clock" />
-
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="50dp"
+        android:format12Hour="@null"
+        android:format24Hour="HH:mm:ss"
+        android:textSize="200dp"
+        android:textColor="#ffffff"
+        android:timeZone="GMT+0200" />
 
     <!-- This FrameLayout insets its children based on system windows using
          android:fitsSystemWindows. -->
     <FrameLayout
         android:id="@+id/videoViewLayout"
-        android:layout_height="381dp"
-        android:layout_width="672dp">
+        android:layout_width="1008dp"
+        android:layout_height="572dp">
 
 
-
-    <VideoView
-        android:id="@+id/videoView"
-        android:layout_height="fill_parent"
-        android:layout_width="fill_parent" />
-</FrameLayout>
+        <VideoView
+            android:id="@+id/videoView"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+    </FrameLayout>
 
     <TextView
+        android:id="@+id/videoInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/videoViewLayout"
         android:layout_alignEnd="@+id/videoViewLayout"
         android:layout_margin="20dp"
-        android:textColor="#ffffff"
+        android:textColor="#ffffff" />
+
+
+    <ImageView
+        android:id="@+id/cameraView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/videoInfo" />
-
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:id="@+id/cameraView" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true" />
 
     <TextView
+        android:id="@+id/tvStats"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:textColor="#ffffff"
-        android:id="@+id/tvStats" />
+        android:layout_alignParentBottom="true"
+        android:textColor="#ffffff" />
 
 </RelativeLayout>

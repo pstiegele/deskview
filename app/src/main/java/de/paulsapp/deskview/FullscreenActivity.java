@@ -8,12 +8,18 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -21,6 +27,7 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.MediaController;
+import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.VideoView;
 
@@ -34,12 +41,12 @@ import si.virag.fuzzydateformatter.FuzzyDateTimeFormatter;
 
 public class FullscreenActivity extends AppCompatActivity {
 
-    private final SimpleDateFormat _sdfWatchTime = new SimpleDateFormat("HH:mm");
+    private final SimpleDateFormat _sdfWatchTime = new SimpleDateFormat("HH:mm:ss");
     public Context context;
     BroadcastReceiver _broadcastReceiver;
     BroadcastReceiver _cameraBroadcastReceiver;
     String lastUpdated;
-    private TextView clock;
+    private TextClock clock;
     private Timer timer;
     private View mContentView;
     private MediaPlayer.OnErrorListener mOnErrorListener = new MediaPlayer.OnErrorListener() {
@@ -57,13 +64,13 @@ public class FullscreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         GetFeeds.context = this;
 
         setContentView(R.layout.activity_fullscreen);
         context = this;
-        clock = (TextView) findViewById(R.id.clock);
+        clock = (TextClock) findViewById(R.id.clock);
         clock.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
                 | View.SYSTEM_UI_FLAG_FULLSCREEN
                 | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
@@ -80,8 +87,7 @@ public class FullscreenActivity extends AppCompatActivity {
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 
 
-        clock = (TextView) findViewById(R.id.clock);
-        clock.setText(_sdfWatchTime.format(new Date()));
+
 
         VideoView videoView = (VideoView) findViewById(R.id.videoView);
         videoView.setOnErrorListener(mOnErrorListener);
@@ -90,7 +96,7 @@ public class FullscreenActivity extends AppCompatActivity {
         startTimer();
         refreshFeeds();
         updateVideoSource(true);
-        updateCameraView();
+        //updateCameraView();
 
     }
 
@@ -182,7 +188,7 @@ public class FullscreenActivity extends AppCompatActivity {
             @Override
             public void run() {
                 TextView tv = (TextView) findViewById(R.id.tvStats);
-                tv.setText(txt);
+                //tv.setText(txt);
             }
         });
     }
@@ -232,11 +238,17 @@ public class FullscreenActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
+        SpannableString span1 = new SpannableString("HH:mm");
+        SpannableString span2 = new SpannableString("ss");
+        span1.setSpan(new RelativeSizeSpan(1.00f), 0, 4, 0);
+        span2.setSpan(new RelativeSizeSpan(0.40f), 0, 2, 0);
+        span2.setSpan(new ForegroundColorSpan(Color.GRAY),0,2,0);
+
+        clock.setFormat24Hour((Spanned) (TextUtils.concat(span1, span2)));
         _broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context ctx, Intent intent) {
-                if (intent.getAction().compareTo(Intent.ACTION_TIME_TICK) == 0)
-                    clock.setText(_sdfWatchTime.format(new Date()));
+                //clock.setText(_sdfWatchTime.format(new Date()));
                 updateEpisodeDate();
                 FullscreenActivity.this.runOnUiThread(new Runnable() {
                     @Override
@@ -251,12 +263,12 @@ public class FullscreenActivity extends AppCompatActivity {
             @Override
             public void onReceive(Context ctx, Intent intent) {
 
-                updateCameraView();
+                //updateCameraView();
             }
         };
 
         registerReceiver(_broadcastReceiver, new IntentFilter(Intent.ACTION_TIME_TICK));
-        registerReceiver(_cameraBroadcastReceiver, new IntentFilter(Intent.ACTION_TIME_TICK));
+        //registerReceiver(_cameraBroadcastReceiver, new IntentFilter(Intent.ACTION_TIME_TICK));
     }
 
     @Override
@@ -266,7 +278,7 @@ public class FullscreenActivity extends AppCompatActivity {
             unregisterReceiver(_broadcastReceiver);
         }
         if (_cameraBroadcastReceiver != null) {
-            unregisterReceiver(_cameraBroadcastReceiver);
+            //unregisterReceiver(_cameraBroadcastReceiver);
         }
     }
 
